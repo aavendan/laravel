@@ -15,7 +15,7 @@
     return view('welcome');
 });*/
 
-Route::get('/', 'MyController@index');
+//Route::get('/', 'MyController@index');
 Route::resource('fabricantes','FabricanteController');
 Route::resource('fabricantes.vehiculos','VehiculoController');
 Route::get('/', 'VehiculoController@showAll');
