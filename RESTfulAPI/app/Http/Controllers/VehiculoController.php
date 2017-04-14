@@ -1,41 +1,26 @@
-<?php namespace App\Http\Controllers;
+<?php
+
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Vehiculo;
 
 class VehiculoController extends Controller
 {
     //
-    public function showAll() {
-    	return 'mostrando todos los vehículos';
+    public function index() {
+    	return response()->json( ["datos" => Vehiculo::all() ], 200 );
     }
 
-    public function index($id) {
-    	return 'mostrando todos los vehículos con el fabricantes id: '.$id;
-    }
+    public function show($id) {
+    	$vehiculo = Vehiculo::find($id);
 
-    public function create($id) {
-    	return 'mostrando el formulario para agregar un vehículo con el fabricantes id: '.$id;
-    }
+    	if(!$vehiculo) {
+    		return response()->json( ['mensaje' => 'Vehiculo con '.$id.' no encontrado ', 'codigo' => 404], 404 );
+    	}
 
-    public function show($idFabricante, $idVehiculo) {
-    	return 'mostrando el vehículo con id: '.$idVehiculo.' con el fabricantes id: '.$idFabricante;
-    }
-
-    public function edit($idFabricante, $idVehiculo) {
-    	return 'mostrando el formulario para editar el vehículo con id: '.$idVehiculo.' con el fabricantes id: '.$idFabricante;
-    }
-
-    public function update($idFabricante, $idVehiculo) {
-    	
-    }
-
-    public function destroy($idFabricante, $idVehiculo) {
-    	
-    }
-
-    public function store($idFabricante) {
-    	
+    	return response()->json( ['datos'=>$vehiculo] , 200);
     }
 }
