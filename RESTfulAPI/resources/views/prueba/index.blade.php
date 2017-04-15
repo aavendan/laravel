@@ -6,5 +6,6 @@
 </head>
 <body>
 	<h1>{{$saludo}}</h1>
+	<?php echo "hola"; ?>
 </body>
 </html>

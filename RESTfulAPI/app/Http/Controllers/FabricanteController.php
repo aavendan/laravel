@@ -7,6 +7,9 @@ use App\Fabricante;
 
 class FabricanteController extends Controller
 {
+	public function __construct() {
+		$this->middleware('auth.basic',[ "only" => ['store', 'update','destroy'] ]);
+	}
     //
 
     public function index() {
@@ -40,6 +43,6 @@ class FabricanteController extends Controller
     }
 
     public function store() {
-
+    	return 'Petición recibida';
     }
 }

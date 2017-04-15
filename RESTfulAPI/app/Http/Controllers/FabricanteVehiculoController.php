@@ -9,6 +9,10 @@ use App\Vehiculo;
 
 class FabricanteVehiculoController extends Controller
 {
+	/*public function __construct() {
+		$this->middleware('auth.basic');
+	}*/
+
     //
     public function showAll() {
     	return 'mostrando todos los vehículos';

@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-
-class FabricantesMigration extends Migration
+    
+class User extends Migration
 {
     /**
      * Run the migrations.
@@ -12,10 +12,10 @@ class FabricantesMigration extends Migration
      */
     public function up()
     {
-        Schema::create('fabricantes', function (Blueprint $table) {
+        Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre');
-            $table->integer('telefono');
+            $table->string('email')->unique();
+            $table->string('password');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ class FabricantesMigration extends Migration
      */
     public function down()
     {
-        Schema::drop('fabricantes');
+        Schema::drop('Users');
     }
 }
