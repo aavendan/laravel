@@ -35,14 +35,21 @@ class FabricanteController extends Controller
     }
 
     public function update($id) {
-
+    	return 'Petición recibida en Update';
     }
 
     public function destroy($id) {
 
     }
 
-    public function store() {
-    	return 'Petición recibida';
+    public function store(Request $request) {
+
+    	if(!$request->input('nombre') || !$request->input('telefono')) {
+    		return response()->json(['mensaje' => "No se pudo procesar la solicitud", "codigo" => 422], 422);
+    	}
+
+		Fabricante::create($request->all());
+    	return response()->json( ["mensaje" => 'Fabricante insertado' ], 201 );
+    	
     }
 }
