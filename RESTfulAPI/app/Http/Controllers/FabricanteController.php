@@ -34,8 +34,45 @@ class FabricanteController extends Controller
     	return 'editando un fabricante con id '.$id;
     }
 
-    public function update($id) {
-    	return 'Petición recibida en Update';
+    public function update(Request $request, $id) {
+    	$method = $request->method();
+    	$fabricante = Fabricante::find($id);
+
+    	if(!$fabricante) {
+    		return response()->json(['mensaje' => "No existe el fabricante asociado", "codigo" => 404], 404);
+    	}
+
+		if($method == 'PATCH') 
+    	{
+
+    		$nombre = $request->input('nombre');
+    		if($nombre != null && $nombre != '') {
+    			$fabricante->nombre = $nombre;
+    		}
+
+    		$telefono = $request->input('telefono');
+    		if($telefono != null && $telefono != '') {
+    			$fabricante->telefono = $telefono;	
+    		}
+
+    		$fabricante->save();
+
+    		return response()->json( ["mensaje" => 'Vehículo actualizado' ], 200 );
+    	} 
+
+    	$nombre = $request->input('nombre');
+    	$telefono = $request->input('telefono');
+
+    	if(!$nombre || !$telefono) {
+    		return response()->json(['mensaje' => "No se pudo procesar la solicitud", "codigo" => 422], 422);
+    	}
+
+    	$fabricante->nombre = $nombre;
+    	$fabricante->telefono = $telefono;	
+
+    	$fabricante->save();
+
+    	return response()->json( ["mensaje" => 'Vehículo actualizado' ], 200 );
     }
 
     public function destroy($id) {
