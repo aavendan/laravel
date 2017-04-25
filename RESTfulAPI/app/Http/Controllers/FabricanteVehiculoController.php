@@ -38,11 +38,73 @@ class FabricanteVehiculoController extends Controller
     	return 'mostrando el formulario para editar el vehículo con id: '.$idVehiculo.' con el fabricantes id: '.$idFabricante;
     }
 
-    public function update($idFabricante, $idVehiculo) {
-    	
+    public function update(Request $request, $idFabricante, $idVehiculo) {
+    	$method = $request->method();
+    	$fabricante = Fabricante::find($idFabricante);
+
+    	if(!$fabricante) {
+    		return response()->json(['mensaje' => "No existe el fabricante asociado", "codigo" => 404], 404);
+    	}
+
+    	$vehiculo = $fabricante->vehiculos()->find($idVehiculo);
+
+    	if(!$vehiculo) {
+    		return response()->json(['mensaje' => "No existe el vehiculo asociado", "codigo" => 404], 404);
+    	}
+
+    	$peso = $request->input('peso');
+    	$color = $request->input('color');
+    	$cilindraje = $request->input('cilindraje');
+    	$potencia = $request->input('potencia');
+
+		if($method == 'PATCH') 
+    	{
+    		$bandera = false;
+
+    		if($peso != null && $peso != '') {
+    			$vehiculo->peso = $peso;
+    			$bandera = true;
+    		}
+
+    		if($color != null && $color != '') {
+    			$vehiculo->color = $color;
+    			$bandera = true;
+    		}
+    		
+    		if($cilindraje != null && $cilindraje != '') {
+    			$vehiculo->cilindraje = $cilindraje;
+    			$bandera = true;
+    		}
+    		
+    		if($potencia != null && $potencia != '') {
+    			$vehiculo->potencia = $potencia;
+    			$bandera = true;
+    		}
+
+    		if($bandera) {
+    			$vehiculo->save();
+				return response()->json( ["mensaje" => 'Vehículo actualizado' ], 200 );	
+    		}
+
+    		return response()->json(['mensaje' => "No se modifico ningun vehiculo", "codigo" => 304], 304);
+    		
+    	} 
+
+    	if(!$peso || !$color || !$cilindraje || !$potencia) {
+    		return response()->json(['mensaje' => "No se pudo procesar la solicitud", "codigo" => 422], 422);
+    	}
+
+    	$vehiculo->peso = $peso;
+    	$vehiculo->cilindraje = $cilindraje;
+    	$vehiculo->color = $color;
+    	$vehiculo->potencia = $potencia;	
+
+    	$vehiculo->save();
+
+    	return response()->json( ["mensaje" => 'Vehículo actualizado' ], 200 );
     }
 
-    public function destroy($idFabricante, $idVehiculo) {
+    public function destroy(Request $request, $idFabricante, $idVehiculo) {
     	
     }
 

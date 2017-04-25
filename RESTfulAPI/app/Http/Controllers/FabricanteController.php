@@ -42,26 +42,32 @@ class FabricanteController extends Controller
     		return response()->json(['mensaje' => "No existe el fabricante asociado", "codigo" => 404], 404);
     	}
 
+    	$nombre = $request->input('nombre');
+    	$telefono = $request->input('telefono');
+    	
 		if($method == 'PATCH') 
     	{
 
-    		$nombre = $request->input('nombre');
+    		$bandera = false;
     		if($nombre != null && $nombre != '') {
     			$fabricante->nombre = $nombre;
+    			$bandera = true;
     		}
 
-    		$telefono = $request->input('telefono');
     		if($telefono != null && $telefono != '') {
-    			$fabricante->telefono = $telefono;	
+    			$fabricante->telefono = $telefono;
+    			$bandera = true;	
     		}
 
-    		$fabricante->save();
+    		if($bandera) {
+    			$fabricante->save();
 
-    		return response()->json( ["mensaje" => 'Vehículo actualizado' ], 200 );
+    			return response()->json( ["mensaje" => 'Fabricante actualizado' ], 200 );	
+    		}
+
+    		return response()->json(['mensaje' => "No se modifico ningun fabricante", "codigo" => 304], 304);
+    		
     	} 
-
-    	$nombre = $request->input('nombre');
-    	$telefono = $request->input('telefono');
 
     	if(!$nombre || !$telefono) {
     		return response()->json(['mensaje' => "No se pudo procesar la solicitud", "codigo" => 422], 422);
@@ -72,10 +78,10 @@ class FabricanteController extends Controller
 
     	$fabricante->save();
 
-    	return response()->json( ["mensaje" => 'Vehículo actualizado' ], 200 );
+    	return response()->json( ["mensaje" => 'Fabricante actualizado' ], 200 );
     }
 
-    public function destroy($id) {
+    public function destroy(Request $request, $idFabricante) {
 
     }
 
